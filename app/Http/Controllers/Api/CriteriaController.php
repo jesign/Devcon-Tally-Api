@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Criteria;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class CriteriaController extends Controller

@@ -15,17 +15,22 @@
 Route::prefix('/events')->group(function(){
    Route::get('/', 'EventController@index');
    Route::post('/', 'EventController@save');
-   Route::post('/{id}/delete', 'EventController@delete');
+   Route::post('/{event}/use', 'EventController@use');
+   Route::post('/{event}/delete', 'EventController@destroy');
+
+    Route::prefix('{event}/participants')->group(function(){
+        Route::get('/', 'ParticipantController@index');
+        Route::post('/', 'ParticipantController@save');
+        Route::post('/{id}/delete', 'ParticipantController@destroy');
+    });
+
+    Route::prefix('{event}/criteria')->group(function(){
+        Route::get('/', 'CriteriaController@index');
+        Route::post('/', 'CriteriaController@save');
+        Route::post('/{id}/delete', 'CriteriaController@delete');
+    });
 });
 
-Route::prefix('/participants')->group(function(){
-    Route::get('/', 'ParticipantController@index');
-    Route::post('/', 'ParticipantController@save');
-    Route::post('/{id}/delete', 'ParticipantController@delete');
-});
 
-Route::prefix('/criteria')->group(function(){
-    Route::get('/', 'CriteriaController@index');
-    Route::post('/', 'CriteriaController@save');
-    Route::post('/{id}/delete', 'CriteriaController@delete');
-});
+
+

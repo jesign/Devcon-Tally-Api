@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Event;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
@@ -23,13 +24,12 @@ class EventController extends Controller
 
         $event->fill($request->all());
         $event->save();
-        return $event;
+        return response()->json($event);
     }
 
-
-    public function destroy($id)
+    public function destroy(Event $event)
     {
-        $event = Event::findOrFail($id);
-        return $event->delete();
+        $success = $event->delete();
+        return response()->json(compact('success'));
     }
 }
