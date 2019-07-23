@@ -19,12 +19,13 @@ class CreateCriteriaTable extends Migration
             $table->integer('event_id');
             $table->text('description')->nullable();
             $table->integer('max_points')->default(0);
-            $table->float('percentage', 3, 2);
+            $table->float('percentage', 5, 2);
+            $table->timestamps();
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Reverse the migrations.l
      *
      * @return void
      */

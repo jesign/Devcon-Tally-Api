@@ -3,34 +3,38 @@
 namespace App\Http\Controllers\Api;
 
 use App\Criteria;
+use App\Event;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class CriteriaController extends Controller
 {
-    public function index()
+    public function index(Request $request, Event $event)
     {
-        $criteria = Criteria::all();
+        return response()->json($event->criteria);
+    }
+
+    public function save(Request $request, Event $event)
+    {
+        if($request->id){
+            $criteria = Criteria::findOrFail($request->id);
+        } else {
+            $criteria = new Criteria;
+        }
+
+        $criteria->fill($request->all());
+
+        $event->criteria()->save($criteria);
+
         return response()->json($criteria);
     }
 
-    public function save(Request $request)
+
+    public function destroy(Event $event, $id)
     {
-        if($request->id){
-            $criterion = Criteria::findOrFail($request->id);
-        } else {
-            $criterion = new Criteria;
-        }
+        $criteria = Criteria::findOrFail($id);
+        $success = $criteria->delete();
 
-        $criterion->fill($request->all());
-        $criterion->save();
-        return $criterion;
-    }
-
-
-    public function destroy($id)
-    {
-        $criterion = Criteria::findOrFail($id);
-        return $criterion->delete();
+        return response()->json(compact('success'));
     }
 }

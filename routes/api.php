@@ -27,7 +27,7 @@ Route::prefix('/events')->group(function(){
     Route::prefix('{event}/criteria')->group(function(){
         Route::get('/', 'CriteriaController@index');
         Route::post('/', 'CriteriaController@save');
-        Route::post('/{id}/delete', 'CriteriaController@delete');
+        Route::post('/{id}/delete', 'CriteriaController@destroy');
     });
 });
 
