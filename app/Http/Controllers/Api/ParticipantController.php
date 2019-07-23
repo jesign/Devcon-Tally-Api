@@ -9,10 +9,9 @@ use Illuminate\Http\Request;
 
 class ParticipantController extends Controller
 {
-    public function index()
+    public function index(Request $request, Event $event)
     {
-        $participants = Participant::all();
-        return response()->json($participants);
+        return response()->json($event->participants);
     }
 
     public function save(Request $request, Event $event)
