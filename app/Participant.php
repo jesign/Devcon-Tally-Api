@@ -11,4 +11,13 @@ class Participant extends Model
     public function event(){
         return $this->belongsTo('event');
     }
+
+    public function scores(){
+        return $this->hasMany(ParticipantScore::class);
+    }
+
+    public function criteria()
+    {
+        return $this->belongsToMany(Criteria::class, 'participant_scores');
+    }
 }

@@ -39,6 +39,7 @@ class ParticipantTest extends TestCase
 
     public function testParticipantCreate()
     {
+
         $data = [
             'name' => 'John Doe'
         ];

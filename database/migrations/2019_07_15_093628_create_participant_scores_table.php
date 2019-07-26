@@ -16,6 +16,7 @@ class CreateParticipantScoresTable extends Migration
         Schema::create('participant_scores', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('participant_id');
+            $table->integer('criteria_id');
             $table->integer('score');
             $table->timestamps();
         });

@@ -31,6 +31,7 @@ Route::prefix('/events')->group(function(){
     });
 });
 
-
-
-
+Route::prefix('/participants/{participant}')->group(function(){
+   Route::post('/tally', 'TallyController@tally');
+   Route::get('/scores', 'TallyController@getScores');
+});
