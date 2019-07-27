@@ -30,9 +30,9 @@ Route::middleware(['bindings', 'auth:api'])->group(function (){
             Route::post('/{id}/delete', 'CriteriaController@destroy');
         });
     });
-});
 
-Route::prefix('/participants/{participant}')->group(function(){
-   Route::post('/tally', 'TallyController@tally');
-   Route::get('/scores', 'TallyController@getScores');
+    Route::prefix('/participants/{participant}')->group(function(){
+    Route::post('/tally', 'TallyController@tally');
+    Route::get('/scores', 'TallyController@getScores');
+    });
 });
