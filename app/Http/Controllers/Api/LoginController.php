@@ -24,9 +24,9 @@ class LoginController extends Controller
             $token = auth()->user()->generateToken();
 
             return response()->json(
-                [ 'token' => $token ], 200);
+                [ 'token' => $token ], 201);
         } else {
-            return response()->json(['error' => 'Un-Authorised'], 401);
+            return response()->json(['error' => 'Unauthorised'], 401);
         }
     }
 }

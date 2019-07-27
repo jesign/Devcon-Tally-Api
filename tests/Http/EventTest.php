@@ -15,6 +15,11 @@ use Laravel\Passport\Passport;
 
 class EventTest extends TestCase
 {
+    public function setUp() : void
+    {
+        parent::setUp();
+
+    }
 
     public function testEventIndex()
     {
