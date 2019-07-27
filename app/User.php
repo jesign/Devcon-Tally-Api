@@ -40,6 +40,6 @@ class User extends Authenticatable
 
     public function generateToken()
     {
-        $this->createToken('DevConTallyApp')->accessToken;
+        return $this->createToken('DevConTallyApp')->accessToken;
     }
 }
