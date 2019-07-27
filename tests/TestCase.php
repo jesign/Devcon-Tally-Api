@@ -12,8 +12,16 @@ abstract class TestCase extends BaseTestCase
 
     protected function setUp(): void
     {
-        $this->withExceptionHandling();
+        // $this->withExceptionHandling();
         parent::setUp();
+
+        /**
+         * 
+        *
+        * Without Artisan call you will get a passport 
+        * "please create a personal access client" error
+        */
+        \Artisan::call('passport:install');
     }
 
 }

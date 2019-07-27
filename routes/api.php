@@ -11,23 +11,24 @@
 |
 */
 
+Route::post('/login', 'LoginController@login');
 
-Route::prefix('/events')->group(function(){
-   Route::get('/', 'EventController@index');
-   Route::post('/', 'EventController@save');
-   Route::post('/{event}/use', 'EventController@use');
-   Route::post('/{event}/delete', 'EventController@destroy');
+Route::middleware(['bindings', 'auth:api'])->group(function (){
+    Route::prefix('/events')->group(function(){
+    Route::get('/', 'EventController@index');
+    Route::post('/', 'EventController@save'); Route::post('/{event}/use', 'EventController@use'); Route::post('/{event}/delete', 'EventController@destroy');
+    
+        Route::prefix('{event}/participants')->group(function(){
+            Route::get('/', 'ParticipantController@index');
+            Route::post('/', 'ParticipantController@save');
+            Route::post('/{id}/delete', 'ParticipantController@destroy');
+        });
 
-    Route::prefix('{event}/participants')->group(function(){
-        Route::get('/', 'ParticipantController@index');
-        Route::post('/', 'ParticipantController@save');
-        Route::post('/{id}/delete', 'ParticipantController@destroy');
-    });
-
-    Route::prefix('{event}/criteria')->group(function(){
-        Route::get('/', 'CriteriaController@index');
-        Route::post('/', 'CriteriaController@save');
-        Route::post('/{id}/delete', 'CriteriaController@destroy');
+        Route::prefix('{event}/criteria')->group(function(){
+            Route::get('/', 'CriteriaController@index');
+            Route::post('/', 'CriteriaController@save');
+            Route::post('/{id}/delete', 'CriteriaController@destroy');
+        });
     });
 });
 

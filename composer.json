@@ -12,6 +12,7 @@
         "barryvdh/laravel-cors": "^0.11.3",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.8.*",
+        "laravel/passport": "^7.3",
         "laravel/tinker": "^1.0"
     },
     "require-dev": {
@@ -44,7 +45,10 @@
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
-        }
+        },
+        "files": [
+            "tests/utilities/functions.php"
+        ]
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

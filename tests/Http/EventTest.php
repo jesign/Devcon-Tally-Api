@@ -10,12 +10,24 @@ namespace Tests\Http;
 
 use App\Event;
 use Tests\TestCase;
+use App\User;
+use Laravel\Passport\Passport;
 
 class EventTest extends TestCase
 {
+
     public function testEventIndex()
     {
-        $response = $this->json('GET','api/events');
+        $user = create(User::class);
+
+        Passport::actingAs($user);
+
+        $token = $user->generateToken();
+
+        $response = $this->withHeaders([
+            "Authorization" => "Bearer ".$token,
+        ])->json('GET','api/events/');
+
         $response->assertStatus(200);
     }
 
