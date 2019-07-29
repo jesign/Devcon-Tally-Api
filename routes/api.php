@@ -15,6 +15,8 @@ Route::post('/login', 'LoginController@login');
 Route::post('/register', 'RegisterController@register');
 
 Route::middleware(['bindings', 'auth:api'])->group(function (){
+    Route::post('/logout', 'UserController@logout');
+
     Route::prefix('/events')->group(function(){
         Route::get('/', 'EventController@index');
         Route::post('/', 'EventController@save'); Route::post('/{event}/use', 'EventController@use'); Route::post('/{event}/delete', 'EventController@destroy');

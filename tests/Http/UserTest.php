@@ -1,10 +1,12 @@
 <?php
 
-namespace Tests\Feature\Feature;
+namespace Tests\Http;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\User;
+use Laravel\Passport\Passport;
 
 class UserTest extends TestCase
 {
@@ -52,5 +54,20 @@ class UserTest extends TestCase
         $response->assertJsonFragment($data);
 
         $response->assertStatus(201); 
+    }
+
+    public function test_logout()
+    {
+        $this->withoutExceptionHandling();
+
+        $user = create(User::class);
+
+        Passport::actingAs($user);
+
+        $user->generateToken();
+
+        $response = $this->json('POST', '/api/logout/');
+        
+        $response->assertStatus(200); 
     }
 }

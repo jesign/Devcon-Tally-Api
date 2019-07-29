@@ -5,6 +5,7 @@ use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\OauthAccessToken;
 
 class User extends Authenticatable
 {
@@ -41,7 +42,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(ParticipantScore::class);
     }
-    
+
+    public function oauthAccessToken(){
+        return $this->hasMany(OauthAccessToken::class);
+    }
+
+
+    ################# custom methods ###################
 
     public function generateToken()
     {
