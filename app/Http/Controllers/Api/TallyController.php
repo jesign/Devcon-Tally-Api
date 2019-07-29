@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Event;
 use App\Participant;
 use App\ParticipantScore;
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Laravel\Passport\Passport;
 
 class TallyController extends Controller
 {
@@ -19,11 +21,13 @@ class TallyController extends Controller
 
         foreach($request->scores as $score){
             $scores[$score['criteria_id']] = [
-                'score' => $score['score']
+                'score' => $score['score'],
+                'user_id' => auth()->user()->id
             ];
         }
 
         $participant->criteria()->sync($scores);
-        return response()->json($participant->criteria);
+
+        return response()->json($participant->scores);
     }
 }

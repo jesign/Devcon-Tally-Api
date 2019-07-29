@@ -28,11 +28,11 @@ class ParticipantScoreController extends Controller
 
         $validator->validate();
 
-        if (!$criteria = Criteria::find($data['criteria_id'])->first()) {
+        if (!$criteria = Criteria::find($data['criteria_id'])) {
             abort(404, 'Criteria not found');
         }
         
-        if (!$participant = Participant::find($data['participant_id'])->first()) {
+        if (!$participant = Participant::find($data['participant_id'])) {
             abort(404, 'Participant');
         }
 

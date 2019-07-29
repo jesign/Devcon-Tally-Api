@@ -22,6 +22,10 @@ class ParticipantScoreTest extends TestCase
         parent::setUp();
 
         $this->faker = $this->makeFaker();
+
+        $user = create(User::class);
+
+        Passport::actingAs($user);
     }
 
     public function test_get_unauthenticated()
@@ -110,7 +114,7 @@ class ParticipantScoreTest extends TestCase
 
         $data = [
             'participant_id' =>  $participantScore,
-            'criteria_id' => $participantScore->id,
+            'criteria_id' => $criteria->id,
             'score' => 49,
         ];
 
@@ -118,7 +122,7 @@ class ParticipantScoreTest extends TestCase
             "Authorization" => "Bearer ".$token,
         ])->json('POST','api/participant-scores/', $data);
 
-        $response->assertStatus(409);
+        $response->dump()->assertStatus(409);
     }
 
     public function test_register_succeeded()

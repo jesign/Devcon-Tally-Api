@@ -23,6 +23,6 @@ class LoginTest extends TestCase
             'password' => $password
         ]);
         
-        $response->assertStatus(200);
+        $response->assertStatus(201);
     }
 }

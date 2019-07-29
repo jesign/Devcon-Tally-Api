@@ -10,6 +10,8 @@ namespace Tests\Http;
 
 use App\Criteria;
 use App\Event;
+use App\User;
+use Laravel\Passport\Passport;
 use Tests\TestCase;
 
 class CriteriaTest extends TestCase
@@ -24,6 +26,10 @@ class CriteriaTest extends TestCase
         $this->event = factory(Event::class)->create();
 
         $this->eventUrlPrefix = 'api/events/' . $this->event->id;
+
+        $user = create(User::class);
+
+        Passport::actingAs($user);
     }
 
     public function testCriteriaIndex()
