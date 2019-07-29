@@ -25,6 +25,7 @@ Route::middleware(['bindings', 'auth:api'])->group(function (){
             Route::get('/', 'ParticipantController@index');
             Route::post('/', 'ParticipantController@save');
             Route::post('/{id}/delete', 'ParticipantController@destroy');
+            Route::get('/scores', 'ParticipantScoreController@getParticipantsScore');
         });
 
         Route::prefix('{event}/criteria')->group(function(){

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Event;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\ParticipantScore;
@@ -49,5 +50,10 @@ class ParticipantScoreController extends Controller
         return response()->json([
             'participant_id' => $participantScore
         ], 201);
+    }
+
+    public function getParticipantsScore(Event $event)
+    {
+        return Participant::where('event_id', $event->id)->with('scores')->get();
     }
 }
