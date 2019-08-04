@@ -25,6 +25,23 @@ class EventTest extends TestCase
     }
 
 
+    public function testEventRoleUnauthorizedRole()
+    {
+        $user = create(User::class, [
+            'roles' => 'judge'
+        ]);
+
+        Passport::actingAs($user);
+
+        $token = $user->generateToken();
+
+        $response = $this->withHeaders([
+            "Authorization" => "Bearer ".$token,
+        ])->json('GET','api/events/');
+
+        $response->assertStatus(403);
+    }
+
     public function testEventIndex()
     {
         $user = create(User::class);

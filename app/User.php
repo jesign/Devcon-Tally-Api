@@ -54,4 +54,24 @@ class User extends Authenticatable
     {
         return $this->createToken('DevConTallyApp')->accessToken;
     }
+
+    public function hasRole($rolesToMatch)
+    {
+        $userRoles = explode(',', $this->roles);
+
+        if (is_string($rolesToMatch)) {
+            $rolesToMatch = explode(',', $rolesToMatch);
+        }
+
+        $matches = array_intersect($userRoles, $rolesToMatch);
+
+        return count($matches) > 0;
+    }
+
+    public function isAdmin()
+    {
+        return $this->hasRole('admin');
+    }
+
+
 }

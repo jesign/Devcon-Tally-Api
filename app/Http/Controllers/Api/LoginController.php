@@ -19,14 +19,20 @@ class LoginController extends Controller
             'email' => $request->email,
             'password' => $request->password
         ];
- 
+
         if (auth()->attempt($credentials)) {
-            $token = auth()->user()->generateToken();
+            $user = auth()->user();
+            $token = $user->generateToken();
 
             return response()->json(
-                [ 'token' => $token ], 201);
-        } else {
-            return response()->json(['error' => 'Unauthorised'], 401);
+                [
+                    'token' => $token,
+                    'user' => $user
+                ],
+                201
+            );
         }
+
+        return response()->json(['error' => 'Email or password incorrect'], 401);
     }
 }
