@@ -13,7 +13,7 @@ use Laravel\Passport\Passport;
 class TallyController extends Controller
 {
     public function getScores(Request $request, Participant $participant){
-        return response()->json($participant->scores);
+        return response()->json($participant->overAllScore());
     }
 
     public function tally(Request $request, Participant $participant){

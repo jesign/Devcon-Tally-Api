@@ -49,13 +49,14 @@ Route::middleware(['bindings', 'auth:api', 'role:admin'])->group(function () {
         });
     });
 
-    Route::prefix('/participants/{participant}')->group(function () {
-        Route::post('/tally', 'TallyController@tally');
-        Route::get('/scores', 'TallyController@getScores');
-    });
+
 
     Route::prefix('/participant-scores')->group(function () {
         Route::get('/', 'ParticipantScoreController@index');
         Route::post('/', 'ParticipantScoreController@save');
     });
+});
+Route::prefix('/participants/{participant}')->group(function () {
+    Route::post('/tally', 'TallyController@tally');
+    Route::get('/scores', 'TallyController@getScores');
 });
