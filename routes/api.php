@@ -20,7 +20,7 @@ Route::middleware(['bindings', 'auth:api'])->group(function (){
 
     Route::prefix('/events')->group(function () {
         Route::get('/', 'EventController@index');
-//        Route::get('/{event}/participants-scores', 'EventController@participantsScores');
+        Route::get('/{event}/participants-scores', 'EventController@participantsScores');
 
         Route::prefix('/participants/{participant}')->group(function () {
             Route::post('/tally', 'TallyController@tally');
@@ -60,5 +60,3 @@ Route::middleware(['bindings', 'auth:api', 'role:admin'])->group(function () {
         Route::post('/', 'ParticipantScoreController@save');
     });
 });
-
-Route::get('/events/{event}/participants-scores', 'EventController@participantsScores');
