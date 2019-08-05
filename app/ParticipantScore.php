@@ -25,6 +25,6 @@ class ParticipantScore extends Model
 
     public function judge()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

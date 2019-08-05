@@ -20,6 +20,7 @@ Route::middleware(['bindings', 'auth:api'])->group(function (){
 
     Route::prefix('/events')->group(function () {
         Route::get('/', 'EventController@index');
+//        Route::get('/{event}/participants-scores', 'EventController@participantsScores');
 
         Route::prefix('/participants/{participant}')->group(function () {
             Route::post('/tally', 'TallyController@tally');
@@ -49,14 +50,15 @@ Route::middleware(['bindings', 'auth:api', 'role:admin'])->group(function () {
         });
     });
 
-
+    Route::prefix('/participants/{participant}')->group(function () {
+        Route::post('/tally', 'TallyController@tally');
+        Route::get('/scores', 'TallyController@getScores');
+    });
 
     Route::prefix('/participant-scores')->group(function () {
         Route::get('/', 'ParticipantScoreController@index');
         Route::post('/', 'ParticipantScoreController@save');
     });
 });
-Route::prefix('/participants/{participant}')->group(function () {
-    Route::post('/tally', 'TallyController@tally');
-    Route::get('/scores', 'TallyController@getScores');
-});
+
+Route::get('/events/{event}/participants-scores', 'EventController@participantsScores');

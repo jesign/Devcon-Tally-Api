@@ -27,6 +27,17 @@ class EventController extends Controller
         return response()->json($event);
     }
 
+    public function participantsScores(Event $event){
+        $participants = $event->participants()->with('scores.criteria')->get();
+
+        foreach($participants as $participant){
+            $overAllScore = $participant->overAllScore();
+            $participant->totalScore = $overAllScore['overall'];
+        }
+
+        return $participants->sortByDesc("totalScore");
+    }
+
     public function destroy(Event $event)
     {
         $success = $event->delete();
