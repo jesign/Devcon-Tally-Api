@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\OauthAccessToken;
+use PhpParser\Builder;
 
 class User extends Authenticatable
 {
@@ -17,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'desc', 'role'
+        'name', 'email', 'password', 'desc', 'roles'
     ];
 
     /**
@@ -73,5 +74,11 @@ class User extends Authenticatable
         return $this->hasRole('admin');
     }
 
+    public function scopeJudges($query){
+        $query->where('roles', 'judge');
+    }
 
+    public function events(){
+        return $this->belongsToMany(Event::class, 'event_judges');
+    }
 }

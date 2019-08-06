@@ -16,4 +16,12 @@ class Event extends Model
     public function criteria(){
         return $this->hasMany(Criteria::class);
     }
+
+    public function users(){
+        return $this->belongsToMany(User::class, 'event_judges');
+    }
+
+    public function scopeJudges($query){
+        return $this->users()->where('roles', 'judge');
+    }
 }

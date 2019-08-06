@@ -29,7 +29,7 @@ class LoginController extends Controller
                     'token' => $token,
                     'user' => $user
                 ],
-                201
+                200
             );
         }
 

@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -29,5 +32,27 @@ class UserController extends Controller
         } catch (\Throwable $th) {
             throw $th;
         }
+    }
+
+    public function getJudges(){
+        return User::judges()->get();
+    }
+
+    public function saveJudge(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|min:3',
+            'email' => 'required|email|unique:users',
+            'password' => 'required'
+        ]);
+
+        $user = $request->id ? User::find($request->id) : new User;
+
+        $data['roles'] = 'judge';
+        $data['password'] = Hash::make($data['password']);
+        $user->fill($data);
+        $user->save();
+
+        return $user;
     }
 }

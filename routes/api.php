@@ -48,6 +48,14 @@ Route::middleware(['bindings', 'auth:api', 'role:admin'])->group(function () {
             Route::post('/', 'CriteriaController@save');
             Route::post('/{id}/delete', 'CriteriaController@destroy');
         });
+
+        Route::post('/{event}/assign-judges', 'EventController@assignJudges');
+        Route::post('/{event}/remove-judge', 'EventController@removeJudge');
+    });
+
+    Route::prefix('/judges')->group(function(){
+        Route::get('/', 'UserController@getJudges');
+        Route::post('/', 'UserController@saveJudge');
     });
 
     Route::prefix('/participants/{participant}')->group(function () {

@@ -38,6 +38,18 @@ class EventController extends Controller
         return $participants->sortByDesc("totalScore");
     }
 
+    public function assignJudges(Request $request, Event $event){
+        $judgeIds = $request->judge_ids;
+
+        $event->users()->syncWithoutDetaching($judgeIds);
+        return $event->judges()->get();
+    }
+
+    public function removeJudge(Request $request, Event $event){
+        $event->users()->detach($request->id);
+        return $event->judges()->get();
+    }
+
     public function destroy(Event $event)
     {
         $success = $event->delete();
