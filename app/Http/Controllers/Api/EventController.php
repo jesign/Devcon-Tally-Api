@@ -10,7 +10,14 @@ class EventController extends Controller
 {
     public function index()
     {
-        $events = Event::all();
+        $user = auth()->user();
+        if($user->roles == 'admin'){
+            $events = Event::all();
+        }else {
+            $events = $user->events()->get();
+        }
+
+
         return response()->json($events);
     }
 
