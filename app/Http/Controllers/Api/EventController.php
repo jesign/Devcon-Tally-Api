@@ -35,12 +35,17 @@ class EventController extends Controller
     }
 
     public function participantsScores(Event $event){
-        $participants = $event->participants()->with('scores.criteria')->get();
+        $participants = $event->participants()->with('scores.criteria', 'scores.judge')->get();
 
         foreach($participants as $participant){
-            $overAllScore = $participant->overAllScore();
+            $overAllScore = $participant->scoreSummary();
+            $participant->scoreSummary = $overAllScore;
             $participant->totalScore = $overAllScore['overall'];
+
+            unset($participant->scores);
         }
+
+//        dd($participants->sortByDesc("totalScore"));
 
         return $participants->sortByDesc("totalScore");
     }
