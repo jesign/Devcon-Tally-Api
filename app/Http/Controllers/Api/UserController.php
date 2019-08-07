@@ -47,6 +47,7 @@ class UserController extends Controller
         ]);
 
         $user = $request->id ? User::find($request->id) : new User;
+        $data = $request->all();
 
         $data['roles'] = 'judge';
         $data['password'] = Hash::make($data['password']);
