@@ -56,4 +56,9 @@ class UserController extends Controller
 
         return $user;
     }
+
+    public function deleteJudge(User $user){
+        $success = $user->delete();
+        return compact('success');
+    }
 }

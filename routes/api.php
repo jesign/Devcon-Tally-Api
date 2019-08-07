@@ -54,6 +54,7 @@ Route::middleware(['bindings', 'auth:api', 'role:admin'])->group(function () {
     Route::prefix('/judges')->group(function(){
         Route::get('/', 'UserController@getJudges');
         Route::post('/', 'UserController@saveJudge');
+        Route::post('/{user}/delete', 'UserController@deleteJudge');
     });
 
     Route::prefix('/participants/{participant}')->group(function () {
