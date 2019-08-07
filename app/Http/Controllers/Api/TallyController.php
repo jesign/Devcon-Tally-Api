@@ -13,20 +13,27 @@ use Laravel\Passport\Passport;
 class TallyController extends Controller
 {
     public function getScores(Request $request, Participant $participant){
-        return response()->json($participant->overAllScore());
+        return response()->json($participant->scoreSummary());
+    }
+
+    public function getScoreFromJudge(Request $request, Participant $participant){
+        $user = auth()->user();
+        return $participant->scoreFromJudge($user);
     }
 
     public function tally(Request $request, Participant $participant){
         $scores = [];
+        $userId  = auth()->user()->id;
 
         foreach($request->scores as $score){
             $scores[$score['criteria_id']] = [
                 'score' => $score['score'],
-                'user_id' => auth()->user()->id
+                'user_id' => $userId
             ];
         }
 
-        $participant->criteria()->sync($scores);
+
+        $participant->criteria()->wherePivot('user_id', $userId)->sync($scores);
 
         return response()->json($participant->scores);
     }

@@ -20,12 +20,17 @@ Route::middleware(['bindings', 'auth:api'])->group(function (){
 
     Route::prefix('/events')->group(function () {
         Route::get('/', 'EventController@index');
-        Route::get('/{event}/participants-scores', 'EventController@participantsScores');
-        Route::get('{event}/participants/scores', 'ParticipantScoreController@getParticipantsScore');
-        Route::prefix('/participants/{participant}')->group(function () {
-            Route::post('/tally', 'TallyController@tally');
-            Route::get('/scores', 'TallyController@getScores');
+        Route::prefix('/{event}')->group(function(){
+            Route::get('/participants-scores', 'EventController@participantsScores');
+            Route::get('/participants/scores', 'ParticipantScoreController@getParticipantsScore');
+            Route::get('/participants', 'ParticipantController@index');
+            Route::get('/criteria/', 'CriteriaController@index');
         });
+    });
+
+    Route::prefix('/participants/{participant}')->group(function () {
+        Route::post('/tally', 'TallyController@tally');
+        Route::get('/scores', 'TallyController@getScoreFromJudge');
     });
 });
 
@@ -36,13 +41,11 @@ Route::middleware(['bindings', 'auth:api', 'role:admin'])->group(function () {
         Route::post('/{event}/delete', 'EventController@destroy');
 
         Route::prefix('{event}/participants')->group(function () {
-            Route::get('/', 'ParticipantController@index');
             Route::post('/', 'ParticipantController@save');
             Route::post('/{id}/delete', 'ParticipantController@destroy');
         });
 
         Route::prefix('{event}/criteria')->group(function () {
-            Route::get('/', 'CriteriaController@index');
             Route::post('/', 'CriteriaController@save');
             Route::post('/{id}/delete', 'CriteriaController@destroy');
         });
@@ -55,11 +58,6 @@ Route::middleware(['bindings', 'auth:api', 'role:admin'])->group(function () {
         Route::get('/', 'UserController@getJudges');
         Route::post('/', 'UserController@saveJudge');
         Route::post('/{user}/delete', 'UserController@deleteJudge');
-    });
-
-    Route::prefix('/participants/{participant}')->group(function () {
-        Route::post('/tally', 'TallyController@tally');
-        Route::get('/scores', 'TallyController@getScores');
     });
 
     Route::prefix('/participant-scores')->group(function () {

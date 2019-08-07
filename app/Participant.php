@@ -16,6 +16,38 @@ class Participant extends Model
         return $this->hasMany(ParticipantScore::class);
     }
 
+    private function formatScore($score){
+        $computation = ($score->score / $score->criteria->max_points) * $score->criteria->percentage;
+
+        $score->subTotal = $computation;
+
+        $scoreSummary  = [
+            'tally' => $score->score,
+            'criteria_id' => $score->criteria->id,
+            'criteria_name' => $score->criteria->name,
+            'criteria_percentage' => $score->criteria->percentage,
+            'criteria_max_tally' => $score->criteria->max_points,
+            'computed_score' => $computation
+        ];
+
+        return $scoreSummary;
+    }
+
+    public function scoreFromJudge($user){
+        $judgeScores = $this->scores()->where('user_id', $user->id)->get();
+        $subTotal = 0;
+        $scores = [];
+        foreach($judgeScores as $scoreKey => $score){
+
+            $scoreSummary = $this->formatScore($score);
+
+            $subTotal += $scoreSummary['computed_score'];
+            $scores[] = $scoreSummary;
+        }
+
+        return compact('subTotal', 'scores');
+    }
+
     public function scoreSummary(){
         $overall = 0;
 
@@ -25,26 +57,19 @@ class Participant extends Model
         $result = [];
 
         foreach($judgesScoring as $key => $scores){ /* Per Judge*/
-            $result[$key]['sub_total'] = 0;
+
+            $subTotal = 0;
             foreach($scores as $scoreKey => $score){
-                $computation = ($score->score / $score->criteria->max_points) * $score->criteria->percentage;
 
-                $score->subTotal = $computation;
+                $scoreSummary = $this->formatScore($score);
 
-                $scoreSummary  = [
-                    'tally' => $score->score,
-                    'criteria_id' => $score->criteria->id,
-                    'criteria_name' => $score->criteria->name,
-                    'criteria_percentage' => $score->criteria->percentage,
-                    'criteria_max_tally' => $score->criteria->max_points,
-                    'computed_score' => $computation
-                ];
-
-                $result[$key]['sub_total'] += $computation;
-
+                $subTotal += $scoreSummary['computed_score'];
                 $result[$key]['tallies'][$scoreKey] = $scoreSummary;
             }
-             $overall += $result[$key]['sub_total'];
+
+            $result[$key]['sub_total'] = $subTotal;
+
+            $overall += $result[$key]['sub_total']; /* Overall total from all judges*/
         }
 
         $result['overall'] = $overall;
