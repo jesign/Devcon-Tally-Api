@@ -67,4 +67,9 @@ class EventController extends Controller
         $success = $event->delete();
         return response()->json(compact('success'));
     }
+
+    public function judges(Event $event)
+    {
+        return $event->judges()->get();
+    }
 }

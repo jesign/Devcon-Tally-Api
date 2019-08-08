@@ -25,6 +25,7 @@ Route::middleware(['bindings', 'auth:api'])->group(function (){
             Route::get('/participants/scores', 'ParticipantScoreController@getParticipantsScore');
             Route::get('/participants', 'ParticipantController@index');
             Route::get('/criteria/', 'CriteriaController@index');
+            Route::get('/judges', 'EventController@judges');
         });
     });
 
