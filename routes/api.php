@@ -31,7 +31,9 @@ Route::middleware(['bindings', 'auth:api'])->group(function (){
 
     Route::prefix('/participants/{participant}')->group(function () {
         Route::post('/tally', 'TallyController@tally');
-        Route::get('/scores', 'TallyController@getScoreFromJudge');
+        Route::get('/tally', 'TallyController@getCurrentJudgeScore');
+        Route::get('/scores', 'ParticipantController@getScores');
+        Route::get('/judge/{user}/scores', 'ParticipantController@getScoreFromJudge');
     });
 });
 

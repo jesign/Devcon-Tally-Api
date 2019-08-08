@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Event;
 use App\Http\Controllers\Controller;
 use App\Participant;
+use App\User;
 use Illuminate\Http\Request;
 
 class ParticipantController extends Controller
@@ -36,5 +37,13 @@ class ParticipantController extends Controller
         $success = $participant->delete();
 
         return response()->json(compact('success'));
+    }
+
+    public function getScoreFromJudge(Request $request, Participant $participant, User $user){
+        return $participant->scoreFromJudge($user);
+    }
+
+    public function getScores(Request $request, Participant $participant){
+        return response()->json($participant->scoreSummary());
     }
 }
