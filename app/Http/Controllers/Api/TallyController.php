@@ -12,8 +12,6 @@ use Laravel\Passport\Passport;
 
 class TallyController extends Controller
 {
-
-
     public function getCurrentJudgeScore(Request $request, Participant $participant){
         $user = auth()->user();
         return $participant->scoreFromJudge($user);

@@ -9,7 +9,7 @@ class Participant extends Model
     protected $fillable = ['event_id', 'name'];
 
     public function event(){
-        return $this->belongsTo('event');
+        return $this->belongsTo(Event::class);
     }
 
     public function scores(){
@@ -54,15 +54,20 @@ class Participant extends Model
         $judgesScoring = $this->scores->groupBy(function($item, $key){
             return $item->judge->name;
         })->all();
+
+        $judgeCount = $this->event->judges()->count();
+
         $result = [];
 
-        foreach($judgesScoring as $key => $scores){ /* Per Judge*/
+        $result['tallied'] = $this->scores->contains('user_id', auth()->user()->id);
+        $result['completed'] = ($judgeCount === count($judgesScoring));
 
+        foreach($judgesScoring as $key => $scores){ /* Per Judge*/
             $subTotal = 0;
+
             foreach($scores as $scoreKey => $score){
 
                 $scoreSummary = $this->formatScore($score);
-
                 $subTotal += $scoreSummary['computed_score'];
                 $result[$key]['tallies'][$scoreKey] = $scoreSummary;
             }
@@ -72,7 +77,8 @@ class Participant extends Model
             $overall += $result[$key]['sub_total']; /* Overall total from all judges*/
         }
 
-        $result['overall'] = $overall;
+
+        $result['overall'] = $judgeCount ? $overall / $judgeCount : 0;
 
         return $result;
     }

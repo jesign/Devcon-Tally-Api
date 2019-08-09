@@ -45,9 +45,8 @@ class EventController extends Controller
             unset($participant->scores);
         }
 
-//        dd($participants->sortByDesc("totalScore"));
-
-        return $participants->sortByDesc("totalScore");
+        $result = $participants->sortByDesc("totalScore")->values()->all();
+        return $result;
     }
 
     public function assignJudges(Request $request, Event $event){
